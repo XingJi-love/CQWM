@@ -1,6 +1,7 @@
 package com.sky.interceptor;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.context.BaseContext;
 import com.sky.properties.JwtProperties;
 import com.sky.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -31,7 +32,10 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
      * @return
      * @throws Exception
      */
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) throws Exception {
+
         //判断当前拦截到的是Controller的方法还是其他资源
         if (!(handler instanceof HandlerMethod)) {
             //当前拦截到的不是动态方法，直接放行
@@ -43,10 +47,19 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
 
         //2、校验令牌
         try {
+            // 校验令牌是否为空
             log.info("jwt校验:{}", token);
+            // 解析令牌获取claims
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
+            // 获取员工id
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
+            // 打印当前员工id
             log.info("当前员工id：", empId);
+
+            // 设置当前线程的登录员工id(使用ThreadLocal来保存当前登录员工id)
+            // 使得在同一个线程中，无论调用多少次BaseContext.getCurrentId()都能获取到当前登录员工id
+            BaseContext.setCurrentId(empId);
+
             //3、通过，放行
             return true;
         } catch (Exception ex) {

@@ -35,6 +35,7 @@ public class JwtUtil {
                 // 设置过期时间
                 .setExpiration(exp);
 
+        // 生成jwt
         return builder.compact();
     }
 
@@ -52,6 +53,8 @@ public class JwtUtil {
                 .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                 // 设置需要解析的jwt
                 .parseClaimsJws(token).getBody();
+
+        // 返回claims
         return claims;
     }
 
