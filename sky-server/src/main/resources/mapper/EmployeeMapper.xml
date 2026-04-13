@@ -2,4 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.EmployeeMapper">
+    <!-- 分页查询员工信息 -->
+    <select id="pageQuery" resultType="com.sky.entity.Employee">
+        select * from employee
+        <where>
+            <if test="name != null and name != ''">
+                <!-- like模糊查询 concat进行字符串的拼接-->
+                and name like concat('%',#{name},'%')
+            </if>
+        </where>
+        <!-- 按创建时间降序排序 -->
+        order by create_time desc
+    </select>
 </mapper>

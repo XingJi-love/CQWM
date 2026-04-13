@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
         return Result.error(ex.getMessage());
     }
 
-
+    // TODO 捕获数据库重复键值异常(新增员工时出现相同username时，提示已存在)
     /**
      * 捕获数据库重复键值异常
      * @param ex
