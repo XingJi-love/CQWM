@@ -130,4 +130,38 @@ public class EmployeeController {
         // 返回结果(成功)
         return Result.success();
     }
+
+
+    /**
+     * 根据id查询员工
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工")
+    public Result<Employee> getById(@PathVariable Long id) {
+        // 记录日志
+        log.info("根据id查询员工：{}", id);
+        // 调用service层新增方法
+        Employee employee = employeeService.getById(id);
+        // 返回结果(成功)
+        return Result.success(employee);
+    }
+
+
+    /**
+     * 编辑员工信息
+     * @param employeeDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    // RequestBody 注解会将请求体中的Josn数据封装到 EmployeeDTO 中
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("编辑员工信息：{}", employeeDTO);
+        // 调用service层新增方法
+        employeeService.update(employeeDTO);
+        // 返回结果(成功)
+        return Result.success();
+    }
 }
