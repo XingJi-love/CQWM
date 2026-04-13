@@ -69,6 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 新增员工
+     *
      * @param employeeDTO
      * @return
      */
@@ -100,6 +101,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 员工分页查询
+     *
      * @param employeePageQueryDTO
      * @return
      */
@@ -118,5 +120,25 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 封装数据返回
         return new PageResult(total, records);
+    }
+
+
+    /**
+     * 启用禁用员工账号
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        // update employee set status = ? where id = ?;
+        // 动态修改属性 status id 封装为一个对象 employee 对象 封装为对象的好处：方便扩展字段
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        // 更新员工状态
+        employeeMapper.update(employee);
     }
 }
